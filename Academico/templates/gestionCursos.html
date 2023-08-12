@@ -1,0 +1,86 @@
+{% extends "./base.html" %}
+{% block title %} Gestion De Cursos {% endblock %}
+{% block body %}
+<style>
+    table {
+        box-shadow: rgb(160, 158, 158) 5px 5px 5px 5px;
+        margin-top: 3vh;
+        width: 50vh;
+    }
+
+    .contenido {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        margin: 3vh;
+    }
+
+    .card {
+        width: 50vh;
+    }
+</style>
+<h3>Gestion De Cursos</h3>
+<div class="contenido">
+    <div class="card">
+        <div class="card-body">
+            {% if editarCurso %}
+            <form action="/edicionCurso/" method="POST">{% csrf_token %}
+                {% else %}
+            <form action="/registrarCurso/" method="POST">{% csrf_token %}
+                {% endif %}
+                <div class="form-group">
+                    <label for="codigo">Codigo</label>
+                    <input type="text" value="{{editarCurso.codigo}}" name="txtCodigo" id="txtCodigo"
+                        class="form-control" placeholder="Ingrese el codigo" maxlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label for="Nombre">Nombre</label>
+                    <input type="text" value="{{editarCurso.nombre}}" name="txtNombre" id="txtNombre"
+                        class="form-control" placeholder="Ingrese el Nombre" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="Creditos">Credito</label>
+                    <input type="number" name="txtCreditos" id="txtCreditos" class="form-control"
+                        placeholder="Ingrese el Creditos" min="1" max="9" value="{{editarCurso.credito}}" required>
+                </div>
+                {% if editarCurso %}
+                <button type="submit" class="btn btn-success mt-3">Guardar Cambios</button>
+                {% else %}
+                <button type="submit" class="btn btn-success mt-3">Registrar Curso</button>
+                
+            </form>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Codigo</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Credito</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in cursos %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{c.codigo}}</td>
+                <td>{{c.nombre}}</td>
+                <td>{{c.credito}}</td>
+                <td>
+                    <a class="btn btn-info m-2" href="{% url 'editarCurso' c.codigo %}"><i
+                            class="bi bi-pencil-square"></i></a>
+                    <a class="btn btn-danger m-2" href="eliminarCurso/{{c.codigo}}"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    {% endblock %}
+
+
+
+</div>
