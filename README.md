@@ -1,1 +1,1 @@
-# CrudCursos---Django
+# CrudCursos Django
